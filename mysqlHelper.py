@@ -3,9 +3,8 @@ import pymysql
 # escape_string
 
 
-def ExecuteSql(sql):
-    db = pymysql.connect("localhost", "root", "root",
-                         "readfree", charset='utf8')
+def ExecuteSql(sql,connection):
+    db = pymysql.connect(**connection)
     cursor = db.cursor()
     # SQL 插入语句
         # 执行sql语句
@@ -16,10 +15,23 @@ def ExecuteSql(sql):
     # 关闭数据库连接
     db.close()
 
+#执行多条操作
+def ExecuteManySql(sql, values,connection):
+    db = pymysql.connect(**connection)
+    cursor = db.cursor()
+    # SQL 插入语句
+    # try:
+    # 执行sql语句
+    cursor.executemany(sql, values)
+    # 提交到数据库执行
+    db.commit()
+    print('success')
+    db.close()
+
+
 #selectType==1 查询单条
-def GetDb(sql,selectType,pars):
-    db = pymysql.connect("localhost", "root", "root",
-                         "readfree", charset='utf8')
+def GetDb(sql,selectType,pars,connection):
+    db = pymysql.connect(**connection)
     cursor = db.cursor()
     cursor.execute(sql,pars)
     # 查询数据
@@ -31,26 +43,12 @@ def GetDb(sql,selectType,pars):
     db.close()
     return result
 
-
-def ExecuteManySql(sql, values):
-    db = pymysql.connect("localhost", "root", "root",
-                         "readfree", charset='utf8')
-    cursor = db.cursor()
-    # SQL 插入语句
-    # try:
-    # 执行sql语句
-    cursor.executemany(sql, values)
-    # 提交到数据库执行
-    db.commit()
-    print('success')
-    db.close()
-
-# sql = """INSERT INTO bookinfo(bookName,
-#             bookimg, downurl, writer)
-#             VALUES ('Ma3333c', 'Mohan', '321', 'M')"""
-
-
-# insertIntoBookInfo(sql)
-#sql = "select * from getpage order by id desc limit 0,1"
-#valued = GetDb(sql,1)
-#print(valued)
+if __name__ == '__main__':
+    connection={'host':'localhost',
+          'port':3306,
+          'user':'root',
+          'password':'root',
+          'database':'jd'}
+    shopInfo = GetDb(
+        'select * from shop where id=%s', 1, '123', connection)
+    print(shopInfo)

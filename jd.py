@@ -1,5 +1,6 @@
 import requests
 import json
+import mysqlHelper
 import time
 from pyquery import PyQuery as pq
 
@@ -34,7 +35,13 @@ def getName(skuId):
 
 
 # 全局变量
-global priceUrl, shopUrl, headers, shopChinaUrl
+global priceUrl, shopUrl, headers, shopChinaUrl, connection
+connection = {'host': 'localhost',
+              'port': 3306,
+              'user': 'root',
+              'password': 'root',
+              'database': 'jd',
+              'charset':'utf8mb4'}
 shopChinaUrl = "https://item.jd.com/"
 priceUrl = "https://p.3.cn/prices/mgets?skuIds="
 # cat 随意3个值 无影响
@@ -49,46 +56,20 @@ headers = {
 }
 
 if __name__ == '__main__':
-    id = ""
-    print("商品名:%s,价格%s" % (getName(id), getPrice([id])[0]['p']))
+    id = "3491224"
+    dt = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    shopInfo = mysqlHelper.GetDb(
+        'select * from shop where id=%s', 1, id, connection)
+    if shopInfo == None:
+        mysqlHelper.ExecuteSql('insert into shop (id,name,isSelf,businessman) values("%s","%s","%s","%s")' % (
+            id, getName(id), 1, ''), connection)
+        mysqlHelper.ExecuteSql('insert into price (shopId,price,addtime) values("%s","%s","%s")' % (
+            id, getPrice([id])[0]['p'], dt), connection)
+    else:
+        print('商品已经存在了')
+    #print("商品名:%s,价格%s" % (getName(id), getPrice([id])[0]['p']))
 
-#获取id
-#写入数据库
+# 获取id
+# 写入数据库
 # 定期查询价格
 # 发送到微信公众号
-
-# r = requests.get(url, headers=headers)
-# print(r.text)
-# 获取必要的一些参数
-# J-follow-shop 多个相同  data-vid="1000015003" 商户id
-#
-# https://c0.3.cn/stock?skuId=1004610&area=1_72_2799_0&venderId=1000004349&cat=670,686,689&buyNum=1&choseSuitSkuIds=&extraParam={%22originid%22:%221%22}&ch=1&fqsp=0&pduid=1510707152965956130682&pdpin=&detailedAdd=null&callback=jQuery4726459
-# https://c0.3.cn/stock?skuId=3378484&area=1_72_4137_0&venderId=1000015269&cat=670,686,689&buyNum=1&choseSuitSkuIds=&extraParam={%22originid%22:%221%22}&ch=1&fqsp=0&pduid=1510707152965956130682&pdpin=&detailedAdd=null&callback=jQuery3720438
-# https://c0.3.cn/stock?skuId=5712532&area=1_72_4137_0&venderId=1000000326&cat=670,671,2694&buyNum=1&choseSuitSkuIds=&extraParam={%22originid%22:%221%22}&ch=1&fqsp=0&pduid=1510707152965956130682&pdpin=&detailedAdd=null&callback=jQuery346735
-# 获取价格
-# skuId='1981018569'#商品号
-# #J_1,J_2  可一次查询多个
-# realurl=priceUrl+'J_'+skuId
-# r = requests.get(realurl, headers=headers)
-# jd = json.loads(r.text)
-# print(jd[0]['p'])#输出价格
-# #获取物品名 好像只能京东自营商品
-# realurl=shopUrl+skuId
-# r = requests.get(realurl, headers=headers)
-# jd = json.loads(r.text)
-# {
-# "accessories": {
-# "status": 200,
-# "data": {
-# "wName": "罗技（Logitech）G610 Cherry轴全尺寸背光机械游戏键盘 机械键盘 红轴 吃鸡键盘 绝地求生",
-# "wid": 3378484,
-# "imageUrl": "jfs/t3268/132/227094941/162137/a1ffa50f/57abe0a0Ne962f9b2.jpg",
-# "chBrand": "罗技",
-# "model": "G610 ORION RED 背光机械游戏键盘",
-# "list": [],
-# "wMeprice": 900,
-# "wMaprice": 499
-# }
-# }
-# }
-# print(jd['accessories']['data']['wName'])#输出物品名
