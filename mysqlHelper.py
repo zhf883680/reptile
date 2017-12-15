@@ -11,7 +11,7 @@ def ExecuteSql(sql,connection):
     cursor.execute(sql)
     # 提交到数据库执行
     db.commit()
-    print('success')
+    #print('success')
     # 关闭数据库连接
     db.close()
 
@@ -25,7 +25,7 @@ def ExecuteManySql(sql, values,connection):
     cursor.executemany(sql, values)
     # 提交到数据库执行
     db.commit()
-    print('success')
+    #print('success')
     db.close()
 
 

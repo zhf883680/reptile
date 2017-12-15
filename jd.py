@@ -2,6 +2,8 @@ import requests
 import json
 import mysqlHelper
 import time
+import re
+import sys
 from pyquery import PyQuery as pq
 
 
@@ -56,18 +58,29 @@ headers = {
 }
 
 if __name__ == '__main__':
-    id = "3491224"
-    dt = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    shopInfo = mysqlHelper.GetDb(
-        'select * from shop where id=%s', 1, id, connection)
-    if shopInfo == None:
-        mysqlHelper.ExecuteSql('insert into shop (id,name,isSelf,businessman) values("%s","%s","%s","%s")' % (
-            id, getName(id), 1, ''), connection)
-        mysqlHelper.ExecuteSql('insert into price (shopId,price,addtime) values("%s","%s","%s")' % (
-            id, getPrice([id])[0]['p'], dt), connection)
-    else:
-        print('商品已经存在了')
-    #print("商品名:%s,价格%s" % (getName(id), getPrice([id])[0]['p']))
+    
+    print("链接格式:https://item.jd.com/15806736305.html")
+    str = input("请输入京东商品链接：")
+    while str!="exit":
+    #str="https://item.jd.com/15806736305.html"
+        id = re.findall('([1-9]\d*)',str)
+        if len(id)<=0:
+            print("请输入正确的带数字的链接地址")
+            str = input("请输入京东商品链接：")
+        else:
+            id=id[0]
+            dt = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            shopInfo = mysqlHelper.GetDb(
+                'select * from shop where id=%s', 1, id, connection)
+            if shopInfo == None:
+                mysqlHelper.ExecuteSql('insert into shop (id,name,isSelf,businessman) values("%s","%s","%s","%s")' % (
+                    id, getName(id), 1, ''), connection)
+                mysqlHelper.ExecuteSql('insert into price (shopId,price,addtime) values("%s","%s","%s")' % (
+                    id, getPrice([id])[0]['p'], dt), connection)
+            else:
+                print('商品已经存在了')
+            print("商品名:%s,价格%s" % (getName(id), getPrice([id])[0]['p']))
+        
 
 # 获取id
 # 写入数据库
