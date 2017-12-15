@@ -10,6 +10,12 @@ if __name__ == '__main__':
 		#获取商品Id合集
 		for s in shopInfo:
 			ids.append(str(s))
+			#判断该物品的记录是否存在,不存在则增加
+			shop = mysqlHelper.GetDb(
+				'select name from shop where id=%s', 1, s, jd.connection)
+			if shop==None:
+				mysqlHelper.ExecuteSql('insert into shop (id,name,isSelf,businessman) values("%s","%s","%s","%s")' % (
+												id, jd.getName(id), 1, ''), jd.connection)
 	#获取价格
 	prices=jd.getPrice(ids)
 	#时间(datetime类型)
