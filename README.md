@@ -3,6 +3,8 @@ python 爬虫
 ### jd.py
 爬取京东的相关数据的一些方法  
 后续分类增加 以jd-开头
+#### jd-getPrice.py
+根据数据库中数据获取价格,保存  
 ### mysqlHelper.py
 处理mysql数据库的一些方法
 ### wechat.py
