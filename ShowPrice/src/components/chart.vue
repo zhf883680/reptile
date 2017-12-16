@@ -12,9 +12,7 @@
 export default {
   name: "app",
   data() {
-    return {
-     
-    };
+    return {};
   },
   mounted() {
     this.$nextTick(function() {
@@ -46,7 +44,7 @@ export default {
   },
   computed: {
     options() {
-      return  {
+      return {
         title: {
           text: "",
           subtext: "纯属虚构"
@@ -78,7 +76,7 @@ export default {
             }
           }
         ]
-      }
+      };
     }
   },
   watch: {
