@@ -25,6 +25,12 @@ wheels/
 .installed.cfg
 *.egg
 .vscode/
+PriceAPI/PriceAPI/Bin/*
+PriceAPI/PriceAPI/obj/*
+PriceAPI/PriceAPI.Models/Bin/*
+PriceAPI/PriceAPI.Models/obj/*
+PriceAPI/.vs/*
+PriceAPI/packages/*
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
