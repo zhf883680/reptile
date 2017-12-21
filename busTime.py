@@ -56,8 +56,8 @@ if __name__ == '__main__':
     rows = mysqlHelper.GetDb("select * from recordplace", 0, None, connection)
     if len(rows) > 0:
         for row in rows:
-            guid = row[2],
+            guid = row[2]
             place = str(row[1]).split(',')
             needCars.append((guid, place))
         for need in needCars:
-            insertBus(need[0][0], need[1])
+            insertBus(need[0], need[1])

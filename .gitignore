@@ -26,6 +26,7 @@ wheels/
 *.egg
 .vscode/
 .vs/
+test.py
 PriceAPI/PriceAPI/Bin/*
 PriceAPI/PriceAPI/obj/*
 PriceAPI/PriceAPI.Models/Bin/*
