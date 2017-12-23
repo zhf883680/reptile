@@ -33,7 +33,7 @@ export default {
   computed: {
     jdurl: {
       get() {
-        return this.$store.state.id
+        return this.$store.state.jd.id
       },
       set(value) {
         this.$store.commit("updateId", value);

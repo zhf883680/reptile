@@ -58,7 +58,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: Array.from(this.$store.state.prices, a => a.date)
+          data: Array.from(this.$store.state.jd.prices, a => a.date)
         },
         yAxis: {
           type: "value",
@@ -70,7 +70,7 @@ export default {
           {
             name: "价格",
             type: "line",
-            data: Array.from(this.$store.state.prices, a => a.price),
+            data: Array.from(this.$store.state.jd.prices, a => a.price),
             markPoint: {
               data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
             }

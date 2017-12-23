@@ -1,23 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import search from '@/components/search'
 import login from '@/components/login'
-import chart from '@/components/chart'
-import HelloWorld from '@/components/HelloWorld'
+import topNav from '@/components/topNav'
+import leftNav from '@/components/leftNav'
+import busShow from '@/components/busShow'
+
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+   
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: search
+      path: '/busShow',
+      name: 'busShow',
+      component: busShow
     },
     {
       path: '/login',
@@ -25,9 +22,13 @@ export default new Router({
       component: login
     },
     {
-      path: '/chart',
-      name: 'chart',
-      component: chart
+      path: '/topNav',
+      name: 'topNav',
+      component: topNav
+    },{
+      path: '/leftNav',
+      name: 'leftNav',
+      component: leftNav
     }
   ]
 })

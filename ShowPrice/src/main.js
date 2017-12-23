@@ -24,42 +24,49 @@ Vue.use(ElementUI)
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    id: '123123',
-    prices: []
+    jd:{
+      id: '123123',
+      prices: []
+    },
+   bus:{
+     guid:'',
+     busTime:[]
+   }
   },
   mutations: {
     getPrice(state) {
-      if (state.id == 1) {
+      if (state.jd.id == 1) {
         axios.get("../static/prices.json").then((data) => {
-          state.prices=[];
+          state.jd.prices=[];
           data.data.prices.forEach((item) => {
             if (item.date == '2017-1-1')
-            state.prices.push(item);
+            state.jd.prices.push(item);
           })
         });
       }
-      else if (state.id == 2) {
+      else if (state.jd.id == 2) {
         axios.get("../static/prices.json").then((data) => {
-          state.prices=[];
+          state.jd.prices=[];
           data.data.prices.forEach((item) => {
             if (item.date == '2017-1-2')
-            state.prices.push(item);
+            state.jd.prices.push(item);
           });
         });
       }
       else {
         axios.get("../static/prices.json").then((data) => {
-          state.prices=[];
+          state.jd.prices=[];
           data.data.prices.forEach((item) => {
             if (item.date != '2017-1-1' && item.date != '2017-1-2')
-            state.prices.push(item);
+            state.jd.prices.push(item);
           });
         });
       }
     },
     updateId(state,id){
-      state.id=id
+      state.jd.id=id
     }
+    
   }
 })
 /* eslint-disable no-new */
