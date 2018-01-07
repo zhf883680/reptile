@@ -46,3 +46,12 @@ CREATE TABLE `shop` (
 -- ----------------------------
 -- Records of shop
 -- ----------------------------
+DROP TABLE IF EXISTS `userlist`;
+CREATE TABLE `userlist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `phone` varchar(24) DEFAULT NULL,
+  `shopId` varchar(24) DEFAULT NULL,
+  `minPrice` double DEFAULT NULL,
+  `addTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

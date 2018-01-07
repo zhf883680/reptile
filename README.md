@@ -4,7 +4,7 @@ python 爬虫
 爬取京东的相关数据的一些方法  
 后续分类增加 以jd-开头
 #### jd-getPrice.py
-根据数据库中数据获取价格,保存  
+根据数据库中数据获取价格,保存  ,并且若低于设定价格,则自动通过钉钉群组机器人发送消息 请自行获取机器人accesstokend
 ### mysqlHelper.py
 处理mysql数据库的一些方法
 ### busTime.py  

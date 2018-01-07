@@ -80,6 +80,16 @@ if __name__ == '__main__':
             else:
                 print('商品已经存在了')
             print("商品名:%s,价格%s" % (getName(id), getPrice([id])[0]['p']))
+        #是否需要加入此商品至通知列表
+        phone = input("是否加入此商品到通知列表,若需要, 请输入手机号,若不需要,请输入no:")
+        if phone!="no":
+            #加入到通知列表
+            str = input("请输入通知价格,当低于此价格时,会进行通知:")
+            mysqlHelper.ExecuteSql('insert into userlist (shopId,minprice,phone,addtime) values("%s","%s","%s","%s")' % (
+                    id, str, phone,"2017-12-31"), connection)
+            str = input("请输入京东商品链接：")
+        else:
+            str = input("请输入京东商品链接：")
         
 
 # 获取id
