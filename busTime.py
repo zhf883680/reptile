@@ -9,7 +9,7 @@ from pyquery import PyQuery as pq
 import mysqlHelper
 import requests
 import json
-
+import sys
 
 def insertBus(LineGuid, needName):
     # 获取此guid对应的方向站台
@@ -52,12 +52,17 @@ headers = {
 
 if __name__ == '__main__':
     # 获取需要查询的车的资料以及站点
-    needCars = []
-    rows = mysqlHelper.GetDb("select * from recordplace", 0, None, connection)
-    if len(rows) > 0:
-        for row in rows:
-            guid = row[2]
-            place = str(row[1]).split(',')
-            needCars.append((guid, place))
-        for need in needCars:
-            insertBus(need[0], need[1])
+    try:
+        needCars = []
+        rows = mysqlHelper.GetDb("select * from recordplace", 0, None, connection)
+        if len(rows) > 0:
+            for row in rows:
+                guid = row[2]
+                place = str(row[1]).split(',')
+                needCars.append((guid, place))
+            for need in needCars:
+                insertBus(need[0], need[1])
+    except:
+        sys.exit()
+    else:
+        sys.exit()
