@@ -1,8 +1,5 @@
+# -*- coding:utf-8 -*-
 import pymysql
-
-# escape_string
-
-
 def ExecuteSql(sql,connection):
     db = pymysql.connect(**connection)
     cursor = db.cursor()
