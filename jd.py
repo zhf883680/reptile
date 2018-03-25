@@ -33,7 +33,15 @@ def getName(skuId):
             return "获取失败"
     else:
         jd = json.loads(r.text)
-        return jd['accessories']['data']['wName']
+        try:
+            return jd['accessories']['data']['wName']
+        except:
+            r = requests.get(shopChinaUrl + skuId + '.html', headers=headers)
+            if r.status_code == 200:
+                doc = pq(r.text)
+                return doc('.sku-name').text()
+            else:
+                return "获取失败"
 
 
 # 全局变量
