@@ -1,5 +1,7 @@
 # reptile
 python 爬虫
+### GetRailShutDown.py
+根据输入的内容,判断动车/高铁/火车是否停运 数据来源12306  
 ### jd.py
 爬取京东的相关数据的一些方法  
 后续分类增加 以jd-开头
