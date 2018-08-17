@@ -1,0 +1,15 @@
+{
+  "name": "getrail",
+  "version": "1.0.0",
+  "description": "this is a web to get 12306",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "request": "^2.88.0"
+  }
+}

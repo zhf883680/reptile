@@ -113,3 +113,8 @@ ENV/
 .mypy_cache/
 qiandao.py
 签到.bat
+
+#node.js
+node.js/node_modules/
+node.js/.vscode
+

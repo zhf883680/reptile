@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>判断停运情况</title>
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+
+</head>
+
+<body>
+    <header class="bar bar-nav">
+        <h1 class='title'>判断停运情况</h1>
+    </header>
+    <div class="content">
+        <div class="list-block">
+            <ul>
+                <!-- Text inputs -->
+                <li>
+                    <div class="item-content">
+                        <div class="item-media">
+                            <i class="icon icon-form-name"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title label">发车时间</div>
+                            <div class="item-input">
+                                <input type="text" id="txtTime">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media">
+                            <i class="icon icon-form-name"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title label">起始城市</div>
+                            <div class="item-input">
+                                <input type="text" id='txtBegin' placeholder="请输入起始城市" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media">
+                            <i class="icon icon-form-name"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title label">到达城市</div>
+                            <div class="item-input">
+                                <input type="text" id='txtEnd' placeholder="请输入到达城市" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media">
+                            <i class="icon icon-form-name"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title label">车次</div>
+                            <div class="item-input">
+                                <input type="text" id='txtRailNum' placeholder="请输入列车班次 如D3032" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content-block">
+            <div class="row">
+                <div class="col-100">
+                    <a href="javascript:" class="button button-big button-fill button-success" id='btnSearch'>查询</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type='text/javascript' src='https://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='https://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script type="text/javascript" src="https://g.alicdn.com/msui/sm/0.6.2/js/sm-city-picker.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9061"
+    charset="utf-8"></script>
+
+<script>
+    //   $("#txtBegin").cityPicker({
+    //     toolbarTemplate: '<header class="bar bar-nav">\
+    //     <button class="button button-link pull-right close-picker">确定</button>\
+    //     <h1 class="title">选择起始地址(区随意)</h1>\
+    //     </header>'
+    //   });
+    //   $("#txtEnd").cityPicker({
+    //     toolbarTemplate: '<header class="bar bar-nav">\
+    //     <button class="button button-link pull-right close-picker">确定</button>\
+    //     <h1 class="title">选择终点地址(区随意)</h1>\
+    //     </header>'
+    //   });
+    var myDate = new Date();
+    $("#txtTime").calendar({
+        value: [myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate()]
+    });
+    $('#btnSearch').click(function () {
+        var station_namesList = station_names.split('|')
+        //station_names
+        var index = station_namesList.indexOf($('#txtBegin').val());
+        if (index < 0) {
+            //错误 未获取到
+            $.toast('起始地址获取失败,请重新输入')
+        }
+        var beginPlace = station_namesList[index + 1];
+        index = station_namesList.indexOf($('#txtEnd').val());
+        if (index < 0) {
+            //错误 未获取到
+            $.toast('到达地址获取失败,请重新输入')
+        }
+        var endPlace = station_namesList[index + 1];
+        $.post("http://localhost:8081/get", {
+            time: $('#txtTime').val(),
+            beginPlace: beginPlace,
+            endPlace: endPlace,
+            railNum:$('#txtRailNum').val()
+        }, function (data) {
+            if(data.result==1||data.result==2){
+                $.toast(data.msg)
+            }
+            else{
+                $.alert(data.msg)
+            }
+        },"json")
+        // $.ajax({
+        //             url: 'https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date=' + $('#txtTime').val() + '&leftTicketDTO.from_station=' + beginPlace + '&leftTicketDTO.to_station=' + endPlace + '&purpose_codes=ADULT',
+        //             type: "GET",
+        //             dataType: "jsonp", //指定服务器返回的数据类型
+        //             success: function (data) {
+        //                  console.log(data);
+        //              }
+        //          });
+        // $.getJSON('https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date=' + $('#txtTime').val() + '&leftTicketDTO.from_station=' + beginPlace + '&leftTicketDTO.to_station=' + endPlace + '&purpose_codes=ADULT&callback=', function (data) {
+        //     try {
+        //         var json = data['data']['result'];
+        //         var details;
+        //         var isFail = false;
+        //         json.forEach(element => {
+        //             details = element.split('|')
+        //             if (details[3] == $('#txtRailNum').val()) {
+        //                 isFail = true;
+        //                 if (details[1] == '列车停运') {
+        //                     console.log('true');
+        //                 }
+        //             }
+        //         });
+        //         if (!isFail) {
+        //             //失败
+        //             console.log('error');
+        //         }
+        //     }
+        //     catch (ex) {
+        //         console.log('地址不对')
+        //     }
+        // })
+    })
+</script>
+
+</html>
