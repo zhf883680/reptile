@@ -8,20 +8,23 @@ var urlencodedParser = bodyParser.urlencoded({
     extended: false
 })
 
-app.use(express.static('public'));
-
-
-
+app.use(express.static('public'));//访问public目录下文件
+//路由设置
+app.get('/index', function (req, res) {
+    res.sendFile( __dirname + "/" + "getrailshutdown.html" );
+ })
+//获取发来的post请求
 app.post('/get', urlencodedParser, function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");//允许跨域访问
     res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置response编码为utf-8
-    // 输出 JSON 格式
+    //获取传递的值
     var response = {
         "time": req.body.time,
         "beginPlace": req.body.beginPlace,
         "endPlace": req.body.endPlace,
         "railNum": req.body.railNum
     };
+    //定义请求头
     var options = {
         url: 'https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date=' + response.time + '&leftTicketDTO.from_station=' + response.beginPlace + '&leftTicketDTO.to_station=' + response.endPlace + '&purpose_codes=ADULT',
         headers: {
@@ -34,8 +37,7 @@ app.post('/get', urlencodedParser, function (req, res) {
             "Host": "kyfw.12306.cn"
         }
     };
-    console.log(options.url);
-    //res.end(JSON.stringify(response));
+    //发送get请求
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             //console.log(body) // 打印google首页
@@ -75,7 +77,7 @@ app.post('/get', urlencodedParser, function (req, res) {
         res.end();
     })
 })
-
+//监听端口
 var server = app.listen(8081, function () {
     var host = server.address().address
     var port = server.address().port
